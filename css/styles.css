@@ -1,0 +1,519 @@
+/* ==========================================================================
+   Viram Shah Portfolio: retro video game theme
+   Pixel fonts, hard-edged "dialog box" panels, and chunky game buttons.
+   No Flexbox or Grid, just normal flow, inline-block, and spacing.
+   ========================================================================== */
+
+/* Custom fonts: Press Start 2P for headings and buttons, VT323 for body text */
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap");
+
+/* ---------- Custom properties ---------- */
+:root {
+  /* Colors */
+  --color-bg: #0d1321;           /* night sky behind everything */
+  --color-panel: #18213a;        /* dialog box fill */
+  --color-panel-dark: #111a2e;   /* inner cards */
+  --color-green: #18453b;        /* MSU green, the hero panel */
+  --color-lime: #7dff9b;         /* "health bar" green for links and accents */
+  --color-coin: #ffd23f;         /* gold coin yellow for headings */
+  --color-pink: #ff6b9a;         /* power-up pink for small highlights */
+  --color-cyan: #5ce1ff;         /* sub-headings */
+  --color-text: #e8f0ff;         /* main text */
+  --color-muted: #a9b6d3;        /* dates and captions */
+  --color-border: #e8f0ff;       /* pixel frame */
+
+  /* Type */
+  --font-pixel: "Press Start 2P", "Courier New", monospace;
+  --font-body: "VT323", "Courier New", monospace;
+
+  /* CRT scanlines, layered over backgrounds */
+  --scanlines: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.14) 0,
+    rgba(0, 0, 0, 0.14) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+
+  /* Corners: slightly rounded, like plastic arcade buttons */
+  --radius: 6px;
+  --radius-small: 3px;
+
+  /* Pixel sizes */
+  --px: 4px;                     /* one "pixel" in the frames and shadows */
+  --drop: 8px 8px 0 0 rgba(0, 0, 0, 0.55);
+
+  /* Layout */
+  --content-width: 54rem;
+}
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  /* faint pixel grid, like a level map */
+  background-image:
+    var(--scanlines),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: auto, 24px 24px, 24px 24px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 1.45rem;
+  line-height: 1.35;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-pixel);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--color-lime);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--color-coin);
+}
+
+a:focus-visible {
+  outline: var(--px) dashed var(--color-coin);
+  outline-offset: var(--px);
+}
+
+strong {
+  color: var(--color-coin);
+}
+
+em {
+  color: var(--color-cyan);
+}
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+small {
+  color: var(--color-muted);
+  font-size: 1.15rem;
+}
+
+/* ---------- Skip link: hidden until it gets keyboard focus ---------- */
+body > a:first-child {
+  position: absolute;
+  left: 1rem;
+  top: -5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-coin);
+  color: var(--color-bg);
+  font-family: var(--font-pixel);
+  font-size: 0.7rem;
+  z-index: 200;
+  border-radius: var(--radius-small);
+}
+
+body > a:first-child:focus {
+  top: 1rem;
+}
+
+/* ---------- Header: the title screen ---------- */
+header {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 2.5rem 1rem 1rem;
+}
+
+header > a,
+header > p {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* The logo becomes a pixel block: square corners and a pixel font */
+header svg {
+  display: block;
+  box-shadow: var(--drop);
+  transition: transform 0.15s steps(3);
+}
+
+header svg rect {
+  stroke: var(--color-lime);
+  stroke-width: 4;
+}
+
+header svg text {
+  font-family: var(--font-pixel);
+  font-size: 18px;
+}
+
+header > a:hover svg {
+  transform: translateY(-6px);
+}
+
+header > p {
+  margin: 0 0 0 1.25rem;
+  line-height: 1.6;
+}
+
+header strong {
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  color: var(--color-coin);
+  text-shadow: 3px 3px 0 #000;
+}
+
+/* Navigation: a row of arcade buttons */
+nav ul {
+  margin: 1.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+  margin: 0 0.6rem 0.9rem 0;
+}
+
+nav a {
+  display: inline-block;
+  padding: 0.7rem 0.9rem;
+  background-color: var(--color-lime);
+  color: var(--color-bg);
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  box-shadow: 0 var(--px) 0 0 #2f9e57, var(--drop);
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+}
+
+nav a:hover {
+  background-color: var(--color-coin);
+  color: var(--color-bg);
+  transform: translateY(-3px);
+}
+
+/* Pressing a button pushes it down into its shadow */
+nav a:active {
+  transform: translateY(var(--px));
+  box-shadow: 0 0 0 0 #2f9e57, 4px 4px 0 0 rgba(0, 0, 0, 0.55);
+}
+
+/* ---------- Main sections: dialog boxes with a pixel frame ---------- */
+main {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 1rem;
+  counter-reset: stage;
+}
+
+main > section {
+  margin: 2.5rem 0;
+  padding: 2.25rem 2rem;
+  background-color: var(--color-panel);
+  /* Four hard shadows draw a stepped pixel border, plus a drop shadow */
+  box-shadow:
+    0 calc(var(--px) * -1) 0 0 var(--color-border),
+    0 var(--px) 0 0 var(--color-border),
+    calc(var(--px) * -1) 0 0 0 var(--color-border),
+    var(--px) 0 0 0 var(--color-border),
+    12px 12px 0 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Section headings are numbered like game stages */
+h2 {
+  margin: 0 0 1.75rem;
+  font-size: 1.4rem;
+  color: var(--color-coin);
+  text-shadow: 4px 4px 0 #000;
+}
+
+h2::before {
+  counter-increment: stage;
+  content: "STAGE " counter(stage, decimal-leading-zero);
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.6rem;
+  color: var(--color-pink);
+  text-shadow: none;
+  letter-spacing: 0.1em;
+}
+
+h3 {
+  margin: 2rem 0 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-cyan);
+}
+
+/* ---------- Intro: the start screen ---------- */
+#intro {
+  background-color: var(--color-green);
+  background-image: var(--scanlines);
+}
+
+#intro h1 {
+  margin: 0 0 1.5rem;
+  font-size: 1.6rem;
+  color: var(--color-text);
+  text-shadow: 4px 4px 0 #000;
+}
+
+/* A blinking cursor after the main heading */
+#intro h1::after {
+  content: "_";
+  color: var(--color-lime);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+#intro figcaption {
+  color: var(--color-text);
+}
+
+/* ---------- Images: framed screenshots ---------- */
+figure {
+  margin: 2rem 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border: var(--px) solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--drop);
+}
+
+/* Section photos sit at a slight tilt and snap straight on hover */
+main > section > figure img {
+  transform: rotate(-1.5deg);
+  transition: transform 0.2s steps(4);
+}
+
+#experience > figure img {
+  transform: rotate(1.5deg);
+}
+
+main > section > figure img:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+figcaption {
+  margin-top: 1rem;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+figcaption::before {
+  content: "> ";
+  color: var(--color-lime);
+}
+
+/* ---------- Quote: an NPC speech bubble ---------- */
+blockquote {
+  position: relative;
+  margin: 2rem 0 1rem;
+  padding: 1.5rem 1.5rem 1.5rem 2rem;
+  background-color: var(--color-panel-dark);
+  border: var(--px) solid var(--color-cyan);
+  border-radius: var(--radius);
+  font-size: 1.6rem;
+  color: var(--color-text);
+}
+
+blockquote::before {
+  content: "TIP";
+  position: absolute;
+  top: -0.8rem;
+  left: 1rem;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--color-cyan);
+  color: var(--color-bg);
+  border-radius: var(--radius-small);
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+}
+
+blockquote p {
+  margin: 0;
+}
+
+/* ---------- Quick facts: the character stats screen ---------- */
+dl {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  background-color: var(--color-panel-dark);
+  border: var(--px) dashed var(--color-muted);
+  border-radius: var(--radius);
+}
+
+dt {
+  margin-top: 1rem;
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+  color: var(--color-lime);
+  text-transform: uppercase;
+}
+
+dt::before {
+  content: "\2605 ";
+  color: var(--color-coin);
+}
+
+dt:first-child {
+  margin-top: 0;
+}
+
+dd {
+  margin: 0.25rem 0 0;
+}
+
+/* ---------- Experience and project cards ---------- */
+article {
+  margin-top: 2rem;
+  padding: 0.5rem 1.5rem 1.25rem;
+  background-color: var(--color-panel-dark);
+  border: var(--px) solid var(--color-muted);
+  border-left: calc(var(--px) * 3) solid var(--color-lime);
+  border-radius: var(--radius);
+  transition: border-color 0.2s steps(2);
+}
+
+article:hover {
+  border-color: var(--color-coin);
+}
+
+article h3 {
+  margin-top: 1.25rem;
+}
+
+article ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+article li {
+  margin-bottom: 0.4rem;
+  padding-left: 1.5rem;
+  text-indent: -1.5rem;
+}
+
+/* Bullets become little arrows */
+article li::before {
+  content: "\25B8  ";
+  color: var(--color-pink);
+}
+
+#projects article figure {
+  margin: 1.25rem 0;
+}
+
+/* ---------- Contact ---------- */
+address {
+  font-style: normal;
+}
+
+address ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+address li {
+  margin-bottom: 0.75rem;
+}
+
+address li::before {
+  content: "\2665 ";
+  color: var(--color-pink);
+}
+
+/* ---------- Footer: the credits ---------- */
+footer {
+  margin-top: 3rem;
+  padding: 2.5rem 1rem;
+  background-color: #000;
+  border-top: var(--px) solid var(--color-lime);
+  text-align: center;
+}
+
+footer p {
+  margin: 0 0 0.75rem;
+}
+
+footer small {
+  color: var(--color-muted);
+}
+
+footer > p:last-child a {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 40rem) {
+  body {
+    font-size: 1.3rem;
+  }
+
+  main > section {
+    padding: 1.75rem 1.25rem;
+  }
+
+  #intro h1 {
+    font-size: 1.1rem;
+  }
+
+  h2 {
+    font-size: 1.05rem;
+  }
+
+  header > p {
+    display: block;
+    margin: 1rem 0 0;
+  }
+}
+
+/* Respect people who turn off motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  #intro h1::after {
+    animation: none;
+  }
+
+  header svg,
+  nav a,
+  main > section > figure img,
+  #experience > figure img {
+    transform: none;
+    transition: none;
+  }
+}
