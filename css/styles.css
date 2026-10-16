@@ -1,7 +1,9 @@
 /* ==========================================================================
    Viram Shah Portfolio: retro video game theme
    Pixel fonts, hard-edged "dialog box" panels, and chunky game buttons.
-   No Flexbox or Grid, just normal flow, inline-block, and spacing.
+   Layout is mobile-first: Flexbox for the header, nav, contact and footer,
+   Grid for the whole page and the sections inside it.
+   Breakpoints (min-width): 30rem, 40rem, 56rem, 90rem.
    ========================================================================== */
 
 /* Custom fonts: Press Start 2P for headings and buttons, VT323 for body text */
@@ -67,7 +69,7 @@ body {
   background-size: auto, 24px 24px, 24px 24px;
   color: var(--color-text);
   font-family: var(--font-body);
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   line-height: 1.35;
 }
 
@@ -233,8 +235,8 @@ main {
 }
 
 main > section {
-  margin: 2.5rem 0;
-  padding: 2.25rem 2rem;
+  margin: 2rem 0;
+  padding: 1.75rem 1.25rem;
   background-color: var(--color-panel);
   /* Four hard shadows draw a stepped pixel border, plus a drop shadow */
   box-shadow:
@@ -248,7 +250,7 @@ main > section {
 /* Section headings are numbered like game stages */
 h2 {
   margin: 0 0 1.75rem;
-  font-size: 1.4rem;
+  font-size: 1.05rem;
   color: var(--color-coin);
   text-shadow: 4px 4px 0 #000;
 }
@@ -278,7 +280,7 @@ h3 {
 
 #intro h1 {
   margin: 0 0 1.5rem;
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   color: var(--color-text);
   text-shadow: 4px 4px 0 #000;
 }
@@ -593,27 +595,216 @@ footer > p:last-child a {
   text-transform: uppercase;
 }
 
-/* ---------- Smaller screens ---------- */
-@media (max-width: 40rem) {
+/* ==========================================================================
+   Responsive layout, mobile-first
+   Everything above is the phone layout. Each query below adds layout as
+   the screen gets wider. (The Projects grid has its own queries above.)
+   ========================================================================== */
+
+/* Contact links and footer: Flexbox rows that wrap */
+address ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+address li {
+  margin: 0;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* ---------- 30rem (480px): large phones ---------- */
+@media (min-width: 30rem) {
+  #intro h1 {
+    font-size: 1.25rem;
+  }
+
+  /* Buttons go back to their natural width */
+  nav li {
+    flex: 0 0 auto;
+  }
+}
+
+/* ---------- 40rem (640px): small tablets ---------- */
+@media (min-width: 40rem) {
   body {
-    font-size: 1.3rem;
+    font-size: 1.45rem;
+  }
+
+  header {
+    padding-top: 2.5rem;
   }
 
   main > section {
-    padding: 1.75rem 1.25rem;
+    margin: 2.5rem 0;
+    padding: 2.25rem 2rem;
   }
 
   #intro h1 {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   h2 {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
   }
 
-  header > p {
+  /* Quick facts become a two-column stats table: label | value */
+  dl {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 0.6rem 1.5rem;
+    align-items: baseline;
+  }
+
+  dt {
+    grid-column: 1;
+    margin-top: 0;
+  }
+
+  dd {
+    grid-column: 2;
+    margin: 0;
+  }
+
+  /* Contact links sit in a row */
+  address ul {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem;
+  }
+
+  /* Footer items sit in a row */
+  footer {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    column-gap: 2.5rem;
+  }
+}
+
+/* ---------- 56rem (896px): tablets and small laptops ---------- */
+@media (min-width: 56rem) {
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  /* Nav moves up beside the name, pushed to the right */
+  nav {
+    flex: 1 1 0;
+  }
+
+  nav ul {
+    justify-content: flex-end;
+    margin: 0;
+  }
+
+  /* Intro: text on the left, photo on the right */
+  #intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    column-gap: 2.25rem;
+    align-items: start;
+  }
+
+  #intro h1 {
+    grid-column: 1 / -1;
+    font-size: 1.5rem;
+  }
+
+  #intro > p {
+    grid-column: 1;
+  }
+
+  #intro > figure {
+    grid-column: 2;
+    grid-row: 2 / span 3;
+    align-self: center;
+    margin: 0;
+  }
+
+  /* About: story on the left, quick facts in a side column */
+  #about {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    column-gap: 2.25rem;
+    align-items: start;
+  }
+
+  /* "About me" and "Quick facts" share the top row */
+  #about > h2,
+  #about > p,
+  #about > blockquote {
+    grid-column: 1;
+  }
+
+  #about > h3 {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    margin: 0 0 1.75rem;
+  }
+
+  /* The side column is narrow, so quick facts stack again */
+  #about > dl {
+    grid-column: 2;
+    grid-row: 2 / span 5;
     display: block;
-    margin: 1rem 0 0;
+  }
+
+  #about dt {
+    margin-top: 1rem;
+  }
+
+  #about dt:first-child {
+    margin-top: 0;
+  }
+
+  /* Experience: current job across the top, past jobs side by side */
+  #experience {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+
+  #experience > h2,
+  #experience > figure,
+  #experience > article:first-of-type {
+    grid-column: 1 / -1;
+  }
+
+  #experience > h2,
+  #experience > figure {
+    margin: 0;
+  }
+
+  #experience > article {
+    margin-top: 0;
+  }
+}
+
+/* ---------- 90rem (1440px): large desktops ---------- */
+@media (min-width: 90rem) {
+  main > section {
+    padding: 2.75rem 2.75rem;
+  }
+
+  #intro h1 {
+    font-size: 1.85rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
   }
 }
 
