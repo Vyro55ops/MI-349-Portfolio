@@ -136,15 +136,13 @@ body > a:first-child:focus {
 
 /* ---------- Header: the title screen ---------- */
 header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
   max-width: var(--content-width);
   margin: 0 auto;
-  padding: 2.5rem 1rem 1rem;
-}
-
-header > a,
-header > p {
-  display: inline-block;
-  vertical-align: middle;
+  padding: 2rem 1rem 1rem;
 }
 
 /* The logo becomes a pixel block: square corners and a pixel font */
@@ -169,7 +167,7 @@ header > a:hover svg {
 }
 
 header > p {
-  margin: 0 0 0 1.25rem;
+  margin: 0;
   line-height: 1.6;
 }
 
@@ -181,19 +179,27 @@ header strong {
 }
 
 /* Navigation: a row of arcade buttons */
+nav {
+  flex: 1 1 100%;
+}
+
 nav ul {
-  margin: 1.75rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 0.6rem;
+  margin: 0.75rem 0 0.5rem;
   padding: 0;
   list-style: none;
 }
 
+/* On phones the buttons stretch to fill each row */
 nav li {
-  display: inline-block;
-  margin: 0 0.6rem 0.9rem 0;
+  flex: 1 1 auto;
 }
 
 nav a {
-  display: inline-block;
+  display: block;
+  text-align: center;
   padding: 0.7rem 0.9rem;
   background-color: var(--color-lime);
   color: var(--color-bg);
