@@ -3,7 +3,7 @@
    Pixel fonts, hard-edged "dialog box" panels, and chunky game buttons.
    Layout is mobile-first: Flexbox for the header, nav, contact and footer,
    Grid for the whole page and the sections inside it.
-   Breakpoints (min-width): 30rem, 40rem, 56rem, 90rem.
+   Breakpoints (min-width): 30rem, 40rem, 56rem, 72rem, 90rem.
    ========================================================================== */
 
 /* Custom fonts: Press Start 2P for headings and buttons, VT323 for body text */
@@ -793,8 +793,72 @@ footer p {
   }
 }
 
+/* ---------- 72rem (1152px): laptops ---------- */
+/* The whole page becomes a grid: a sticky sidebar for the header, the
+   content column beside it, and the footer across the bottom. The two
+   outer 1fr tracks keep everything centered on wide screens. */
+@media (min-width: 72rem) {
+  body {
+    display: grid;
+    grid-template-columns: minmax(1rem, 1fr) 15rem minmax(0, 56rem) minmax(1rem, 1fr);
+    grid-template-areas:
+      ". header main ."
+      "footer footer footer footer";
+    column-gap: 2.5rem;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: none;
+    max-height: 100vh;
+    margin: 0;
+    padding: 2.5rem 0;
+    overflow-y: auto;
+  }
+
+  /* Nav turns into a vertical menu, like a game's pause screen */
+  nav {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  nav ul {
+    flex-direction: column;
+    margin-top: 0.5rem;
+  }
+
+  nav a {
+    text-align: left;
+  }
+
+  main {
+    grid-area: main;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  footer {
+    grid-area: footer;
+  }
+
+  #intro h1 {
+    font-size: 1.6rem;
+  }
+}
+
 /* ---------- 90rem (1440px): large desktops ---------- */
 @media (min-width: 90rem) {
+  body {
+    grid-template-columns: minmax(1rem, 1fr) 17rem minmax(0, 64rem) minmax(1rem, 1fr);
+    column-gap: 3rem;
+  }
+
   main > section {
     padding: 2.75rem 2.75rem;
   }
