@@ -432,6 +432,118 @@ article li::before {
   margin: 1.25rem 0;
 }
 
+/* ==========================================================================
+   AI-AUTHORED SECTION: Projects layout
+   Tool: Claude Code (model: Claude Opus 5.5), run in VS Code.
+   Scope: this file only. The AI was told not to edit index.html.
+   Output: every rule from here down to the "END AI-AUTHORED SECTION"
+   comment, unedited.
+
+   PROMPT:
+   "Edit only css/styles.css. Do not change index.html or any other file.
+   Write the responsive layout for the Projects section of my portfolio.
+   The markup is <section id="projects"> containing, in order: an <h2>, an
+   intro <p>, and three <article> cards (#project-scout, #project-sparxley,
+   #project-sat). Each card contains an <h3>, a <p> with a <small> meta line,
+   a <figure> with an <img> and <figcaption>, and one or two description <p>s.
+   Use CSS Grid for this two-dimensional layout. Write it mobile-first: the
+   base rules are for small phones, and each @media query uses min-width to
+   add layout as the screen gets wider. Use these breakpoints: 40rem, 56rem,
+   and 90rem.
+   - Base (phones): one column, cards stacked, spacing done with grid gap
+     instead of margins. The h2 and intro paragraph span the full width.
+   - 40rem: a little more gap between cards.
+   - 56rem: two columns. SCOUT is the featured project, so it spans both
+     columns and becomes its own grid: screenshot on the left, title and meta
+     across the top, description text on the right. Sparxley and SAT Prep sit
+     side by side below it. Use subgrid so the titles, meta lines, photos and
+     text in those two cards line up row by row even though the cards hold
+     different amounts of text.
+   - 90rem: give the SCOUT screenshot a larger share of the row.
+   Do not use Flexbox here. Keep the existing retro theme (colors, fonts,
+   borders, shadows, custom properties); change layout only. Do not use
+   max-width media queries. Comment each block briefly."
+   ========================================================================== */
+
+/* Base (phones): a single-column grid; gap replaces the card margins */
+#projects {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+#projects > h2,
+#projects > p {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+#projects > article {
+  margin-top: 0;
+}
+
+/* 40rem: more breathing room between cards */
+@media (min-width: 40rem) {
+  #projects {
+    gap: 2rem;
+  }
+}
+
+/* 56rem: two columns, with SCOUT featured across the top */
+@media (min-width: 56rem) {
+  #projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* SCOUT spans both columns and lays out its own content in a grid */
+  #project-scout {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    column-gap: 1.75rem;
+    align-items: start;
+  }
+
+  /* Title and meta line run across the top of the card */
+  #project-scout > h3,
+  #project-scout > p:first-of-type {
+    grid-column: 1 / -1;
+  }
+
+  /* Screenshot on the left, spanning both description rows */
+  #project-scout > figure {
+    grid-column: 1;
+    grid-row: 3 / span 2;
+    margin: 0;
+  }
+
+  /* Description paragraphs on the right */
+  #project-scout > p:not(:first-of-type) {
+    grid-column: 2;
+  }
+
+  /* Sparxley and SAT Prep: each card takes five rows of the parent grid and
+     uses subgrid, so title, meta, photo and text line up across the pair */
+  #project-sparxley,
+  #project-sat {
+    display: grid;
+    grid-row: span 5;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    align-content: start;
+  }
+}
+
+/* 90rem: the SCOUT screenshot gets a bigger share of the row */
+@media (min-width: 90rem) {
+  #project-scout {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    column-gap: 2.25rem;
+  }
+}
+
+/* ========================= END AI-AUTHORED SECTION ======================== */
+
 /* ---------- Contact ---------- */
 address {
   font-style: normal;
