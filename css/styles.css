@@ -127,7 +127,7 @@ body > a:first-child {
   background-color: var(--color-coin);
   color: var(--color-bg);
   font-family: var(--font-pixel);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   z-index: 200;
   border-radius: var(--radius-small);
 }
@@ -206,7 +206,7 @@ nav a {
   background-color: var(--color-lime);
   color: var(--color-bg);
   font-family: var(--font-pixel);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   text-decoration: none;
   text-transform: uppercase;
   border-radius: var(--radius);
@@ -258,9 +258,10 @@ h2 {
 h2::before {
   counter-increment: stage;
   content: "STAGE " counter(stage, decimal-leading-zero);
+  content: "STAGE " counter(stage, decimal-leading-zero) / "";
   display: block;
   margin-bottom: 0.75rem;
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: var(--color-pink);
   text-shadow: none;
   letter-spacing: 0.1em;
@@ -288,8 +289,9 @@ h3 {
 /* A blinking cursor after the main heading */
 #intro h1::after {
   content: "_";
+  content: "_" / "";
   color: var(--color-lime);
-  animation: blink 1s steps(1) infinite;
+  animation: blink 1s steps(1) 4;  /* stops after 4s: WCAG 2.2.2 */
 }
 
 @keyframes blink {
@@ -338,6 +340,7 @@ figcaption {
 
 figcaption::before {
   content: "> ";
+  content: "> " / "";
   color: var(--color-lime);
 }
 
@@ -355,6 +358,7 @@ blockquote {
 
 blockquote::before {
   content: "TIP";
+  content: "TIP" / "";
   position: absolute;
   top: -0.8rem;
   left: 1rem;
@@ -363,7 +367,7 @@ blockquote::before {
   color: var(--color-bg);
   border-radius: var(--radius-small);
   font-family: var(--font-pixel);
-  font-size: 0.55rem;
+  font-size: 0.75rem;
 }
 
 blockquote p {
@@ -382,13 +386,14 @@ dl {
 dt {
   margin-top: 1rem;
   font-family: var(--font-pixel);
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: var(--color-lime);
   text-transform: uppercase;
 }
 
 dt::before {
   content: "\2605 ";
+  content: "\2605 " / "";
   color: var(--color-coin);
 }
 
@@ -433,6 +438,7 @@ article li {
 /* Bullets become little arrows */
 article li::before {
   content: "\25B8  ";
+  content: "\25B8  " / "";
   color: var(--color-pink);
 }
 
@@ -569,6 +575,7 @@ address li {
 
 address li::before {
   content: "\2665 ";
+  content: "\2665 " / "";
   color: var(--color-pink);
 }
 
@@ -591,7 +598,7 @@ footer small {
 
 footer > p:last-child a {
   font-family: var(--font-pixel);
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
 }
 
@@ -817,7 +824,7 @@ footer p {
     max-width: none;
     max-height: 100vh;
     margin: 0;
-    padding: 2.5rem 0;
+    padding: 2.5rem 0.75rem;
     overflow-y: auto;
   }
 
