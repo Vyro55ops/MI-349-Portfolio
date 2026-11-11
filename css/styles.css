@@ -23,6 +23,19 @@
   --color-text: #e8f0ff;         /* main text */
   --color-muted: #a9b6d3;        /* dates and captions */
   --color-border: #e8f0ff;       /* pixel frame */
+  --color-button-edge: #2f9e57;  /* 3D edge under the nav buttons */
+  --color-shadow: rgba(0, 0, 0, 0.55);
+  --color-text-shadow: #000;
+  --grid-line: rgba(255, 255, 255, 0.035);
+  --scanline: rgba(0, 0, 0, 0.14);
+
+  /* These stay the same in both themes: the intro panel and footer are
+     always dark, so their text is always light */
+  --color-on-dark: #e8f0ff;
+  --color-on-dark-link: #7dff9b;
+  --color-on-dark-muted: #a9b6d3;
+  --color-on-dark-focus: #ffd23f;
+  --color-footer: #000;
 
   /* Type */
   --font-pixel: "Press Start 2P", "Courier New", monospace;
@@ -31,8 +44,8 @@
   /* CRT scanlines, layered over backgrounds */
   --scanlines: repeating-linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.14) 0,
-    rgba(0, 0, 0, 0.14) 1px,
+    var(--scanline) 0,
+    var(--scanline) 1px,
     transparent 1px,
     transparent 3px
   );
@@ -43,10 +56,36 @@
 
   /* Pixel sizes */
   --px: 4px;                     /* one "pixel" in the frames and shadows */
-  --drop: 8px 8px 0 0 rgba(0, 0, 0, 0.55);
+  --drop: 8px 8px 0 0 var(--color-shadow);
 
   /* Layout */
   --content-width: 54rem;
+
+  color-scheme: dark;
+}
+
+/* ---------- Light mode: the inverse palette ----------
+   js/theme.js sets data-theme="light" on <html>. Same arcade look,
+   printed on cream paper: dark ink, darker accents, softer shadows.
+   Every text color here passes WCAG AA (4.5:1) on the light backgrounds. */
+:root[data-theme="light"] {
+  --color-bg: #f3efe2;
+  --color-panel: #ffffff;
+  --color-panel-dark: #f8f5ec;
+  --color-lime: #17703a;
+  --color-coin: #8a5200;
+  --color-pink: #b0245a;
+  --color-cyan: #0a6680;
+  --color-text: #1b2236;
+  --color-muted: #4a5568;
+  --color-border: #1b2236;
+  --color-button-edge: #0e4a25;
+  --color-shadow: rgba(27, 34, 54, 0.3);
+  --color-text-shadow: rgba(27, 34, 54, 0.18);
+  --grid-line: rgba(27, 34, 54, 0.06);
+  --scanline: rgba(27, 34, 54, 0.04);
+
+  color-scheme: light;
 }
 
 /* ---------- Base ---------- */
@@ -64,8 +103,8 @@ body {
   /* faint pixel grid, like a level map */
   background-image:
     var(--scanlines),
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size: auto, 24px 24px, 24px 24px;
   color: var(--color-text);
   font-family: var(--font-body);
@@ -177,7 +216,7 @@ header strong {
   font-family: var(--font-pixel);
   font-size: 1rem;
   color: var(--color-coin);
-  text-shadow: 3px 3px 0 #000;
+  text-shadow: 3px 3px 0 var(--color-text-shadow);
 }
 
 /* Navigation: a row of arcade buttons */
@@ -210,7 +249,7 @@ nav a {
   text-decoration: none;
   text-transform: uppercase;
   border-radius: var(--radius);
-  box-shadow: 0 var(--px) 0 0 #2f9e57, var(--drop);
+  box-shadow: 0 var(--px) 0 0 var(--color-button-edge), var(--drop);
   transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
 }
 
@@ -223,7 +262,50 @@ nav a:hover {
 /* Pressing a button pushes it down into its shadow */
 nav a:active {
   transform: translateY(var(--px));
-  box-shadow: 0 0 0 0 #2f9e57, 4px 4px 0 0 rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 0 0 var(--color-button-edge), 4px 4px 0 0 var(--color-shadow);
+}
+
+/* ---------- Theme toggle (the button is added by js/theme.js) ---------- */
+#theme-toggle {
+  display: inline-flex;
+  flex: 1 1 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  padding: calc(0.7rem - 3px) 0.9rem;  /* nav button height, minus the border */
+  background-color: var(--color-panel);
+  color: var(--color-text);
+  border: 3px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--drop);
+  font-family: var(--font-pixel);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+}
+
+#theme-toggle:hover {
+  color: var(--color-coin);
+  transform: translateY(-3px);
+}
+
+#theme-toggle:active {
+  transform: translateY(var(--px));
+  box-shadow: 4px 4px 0 0 var(--color-shadow);
+}
+
+#theme-toggle:focus-visible {
+  outline: var(--px) dashed var(--color-coin);
+  outline-offset: var(--px);
+}
+
+/* The sun or moon icon */
+#theme-toggle span {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  line-height: 0.8;
+  color: var(--color-coin);
 }
 
 /* ---------- Main sections: dialog boxes with a pixel frame ---------- */
@@ -244,7 +326,7 @@ main > section {
     0 var(--px) 0 0 var(--color-border),
     calc(var(--px) * -1) 0 0 0 var(--color-border),
     var(--px) 0 0 0 var(--color-border),
-    12px 12px 0 0 rgba(0, 0, 0, 0.6);
+    12px 12px 0 0 var(--color-shadow);
 }
 
 /* Section headings are numbered like game stages */
@@ -252,7 +334,7 @@ h2 {
   margin: 0 0 1.75rem;
   font-size: 1.05rem;
   color: var(--color-coin);
-  text-shadow: 4px 4px 0 #000;
+  text-shadow: 4px 4px 0 var(--color-text-shadow);
 }
 
 h2::before {
@@ -277,12 +359,26 @@ h3 {
 #intro {
   background-color: var(--color-green);
   background-image: var(--scanlines);
+  color: var(--color-on-dark);
+}
+
+#intro a {
+  color: var(--color-on-dark-link);
+}
+
+#intro a:hover {
+  color: var(--color-on-dark);
+}
+
+#intro a:focus-visible,
+footer a:focus-visible {
+  outline-color: var(--color-on-dark-focus);
 }
 
 #intro h1 {
   margin: 0 0 1.5rem;
   font-size: 1.1rem;
-  color: var(--color-text);
+  color: var(--color-on-dark);
   text-shadow: 4px 4px 0 #000;
 }
 
@@ -290,7 +386,7 @@ h3 {
 #intro h1::after {
   content: "_";
   content: "_" / "";
-  color: var(--color-lime);
+  color: var(--color-on-dark-link);
   animation: blink 1s steps(1) 4;  /* stops after 4s: WCAG 2.2.2 */
 }
 
@@ -300,8 +396,38 @@ h3 {
   }
 }
 
+/* ---------- Typed.js headline (set up by js/typing.js) ----------
+   The full headline stays in place but invisible, so the box is already
+   the right size and nothing jumps while the letters type in on top. */
+#intro h1[data-typing] {
+  position: relative;
+}
+
+#intro h1[data-typing]::after {
+  content: none;  /* Typed.js draws its own cursor */
+}
+
+#intro h1[data-typing] > span:first-child {
+  visibility: hidden;
+}
+
+#intro h1[data-typing] > span:nth-child(2) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#intro h1 .typed-cursor {
+  color: var(--color-on-dark-link);
+  animation: blink 1s steps(1) infinite;
+}
+
 #intro figcaption {
-  color: var(--color-text);
+  color: var(--color-on-dark);
+}
+
+#intro figcaption::before {
+  color: var(--color-on-dark-link);
 }
 
 /* ---------- Images: framed screenshots ---------- */
@@ -392,8 +518,12 @@ dt {
 }
 
 dt::before {
-  content: "\2605 ";
-  content: "\2605 " / "";
+  content: "\2605";
+  content: "\2605" / "";
+  margin-right: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  line-height: 0;
   color: var(--color-coin);
 }
 
@@ -574,8 +704,9 @@ address li {
 }
 
 address li::before {
-  content: "\2665 ";
-  content: "\2665 " / "";
+  content: "\2665";
+  content: "\2665" / "";
+  margin-right: 0.5rem;
   color: var(--color-pink);
 }
 
@@ -583,8 +714,8 @@ address li::before {
 footer {
   margin-top: 3rem;
   padding: 2.5rem 1rem;
-  background-color: #000;
-  border-top: var(--px) solid var(--color-lime);
+  background-color: var(--color-footer);
+  border-top: var(--px) solid var(--color-on-dark-link);
   text-align: center;
 }
 
@@ -593,7 +724,15 @@ footer p {
 }
 
 footer small {
-  color: var(--color-muted);
+  color: var(--color-on-dark-muted);
+}
+
+footer a {
+  color: var(--color-on-dark-link);
+}
+
+footer a:hover {
+  color: var(--color-on-dark);
 }
 
 footer > p:last-child a {
@@ -637,7 +776,8 @@ footer p {
   }
 
   /* Buttons go back to their natural width */
-  nav li {
+  nav li,
+  #theme-toggle {
     flex: 0 0 auto;
   }
 }
@@ -834,6 +974,12 @@ footer p {
     width: 100%;
   }
 
+  /* Full width under the nav buttons, text on the left like theirs */
+  #theme-toggle {
+    align-self: stretch;
+    justify-content: flex-start;
+  }
+
   nav ul {
     flex-direction: column;
     margin-top: 0.5rem;
@@ -862,7 +1008,7 @@ footer p {
 /* ---------- 90rem (1440px): large desktops ---------- */
 @media (min-width: 90rem) {
   body {
-    grid-template-columns: minmax(1rem, 1fr) 17rem minmax(0, 64rem) minmax(1rem, 1fr);
+    grid-template-columns: minmax(1rem, 1fr) 17rem minmax(0, 56rem) minmax(1rem, 1fr);
     column-gap: 3rem;
   }
 
@@ -876,6 +1022,13 @@ footer p {
 
   h2 {
     font-size: 1.6rem;
+  }
+
+  /* The content column stays 56rem wide here, so keep SCOUT's screenshot
+     and text at the same split as on laptops (overrides the wider 1.5fr
+     screenshot in the Projects section above) */
+  #project-scout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   }
 }
 
@@ -891,6 +1044,7 @@ footer p {
 
   header svg,
   nav a,
+  #theme-toggle,
   main > section > figure img,
   #experience > figure img {
     transform: none;
